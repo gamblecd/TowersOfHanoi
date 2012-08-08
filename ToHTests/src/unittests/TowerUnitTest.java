@@ -71,9 +71,31 @@ public class TowerUnitTest {
 	
 	@Test
 	public void testCLIDraw() {
-		System.out.println(t1.cliDraw());
-		System.out.println(t2.cliDraw());
-		System.out.println(t3.cliDraw());
+		assertEquals("Failure", t1.cliDraw(),
+				"    ||\n" + 
+				"    ||\n" +
+				"    ||\n" +
+				"    ||\n" +
+				"mmmmmmmmmm");
+		assertEquals("Failure", t2.cliDraw(),
+				"      ||\n" +
+				"      ||\n" +
+				"      ||\n" +
+				"      ||\n" +
+				"      ||\n" +
+				"      ||\n" +
+				"mmmmmmmmmmmmmm");
+		assertEquals("Failure", t3.cliDraw(),
+				"         ||\n" +
+				"         ||\n" +
+				"         ||\n" +
+				"         ||\n" +
+				"         ||\n" +
+				"         ||\n" +
+				"         ||\n" +
+				"         ||\n" +
+				"         ||\n" +
+				"mmmmmmmmmmmmmmmmmmmm");
 		t2.push(new Plate(5));
 		t2.push(new Plate(4));
 		t2.push(new Plate(3));
@@ -86,8 +108,25 @@ public class TowerUnitTest {
 		t3.push(new Plate(3));
 		t3.push(new Plate(2));
 		t3.push(new Plate(1));
-		System.out.println(t3.cliDraw());
-		System.out.println(t2.cliDraw());
+		assertEquals("Failure", t3.cliDraw(),
+				"         ||\n" +
+				"         ||\n" +
+				"         ==\n" +
+				"        ====\n" +
+				"       ======\n" +
+				"      ========\n" +
+				"     ==========\n" +
+				"    ============\n" +
+				"   ==============\n" +
+				"mmmmmmmmmmmmmmmmmmmm");
+		assertEquals("Failure", t2.cliDraw(),
+				"      ||\n" +
+				"      ==\n" +
+				"     ====\n" +
+				"    ======\n" +
+				"   ========\n" +
+				"  ==========\n" +
+				"mmmmmmmmmmmmmm");
 	}
 
 }

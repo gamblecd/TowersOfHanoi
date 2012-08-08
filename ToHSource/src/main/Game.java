@@ -16,9 +16,10 @@ import towers.Tower;
 public class Game {
 	public static final int LEFT_TOWER = 0;
 	public static final int MIDDLE_TOWER = 1;
-	public static final int RIGHT_TOWER = 3;
+	public static final int RIGHT_TOWER = 2;
 	
-	public final int gameSize;
+	private int moveCounter;
+	private final int gameSize;
 	private Tower<Plate> leftTower;
 	private Tower<Plate> middleTower;
 	private Tower<Plate> rightTower;
@@ -35,6 +36,7 @@ public class Game {
 		}
 		gameSize = n;
 		buildGame();
+		resetGame();
 	}
 	
 	private void buildGame() {
@@ -47,16 +49,26 @@ public class Game {
 	}
 	
 	public void resetGame() {
-		for (int i=0; i<gameSize; i++) {
+		for (int i=gameSize; i>0; i--) {
 			leftTower.push(new Plate(i));
 		}
+		moveCounter=0;
+	}
+	
+	public int getMovesCount() {
+		return moveCounter;
 	}
 	
 	public boolean movePlate(int towerFrom, int towerTo) {
+		assert(towerTo < towers.size());
+		assert(towerFrom < towers.size());
 		Tower<Plate> t1 = towers.get(towerFrom);
 		Tower<Plate> t2 = towers.get(towerTo);
-		if (t1.push(t2.peek())) {
-			t2.pop();
+		assert(t2.peek() != null);
+		
+		if (t2.push(t1.peek())) {
+			t1.pop();
+			moveCounter++;
 			return true;
 		} else {
 			return false;

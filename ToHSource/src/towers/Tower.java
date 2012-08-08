@@ -39,11 +39,15 @@ public class Tower<E extends HasSize & CLInteraction & Comparable<? super E>>
 	}
 	
 	public E peek() {
+		if (stack.isEmpty())
+			return null;
 		return stack.peek();
 		
 	}
 	
 	public E pop() {
+		if (stack.isEmpty())
+			return null;
 		return stack.pop();
 	}
 	
