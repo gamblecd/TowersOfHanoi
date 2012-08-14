@@ -44,12 +44,12 @@ public class Tower<E extends HasSize & Copyable<? super E> & CLInteraction & Com
 	public boolean push(E  item) {
 		if ((size() == 0)) {
 			if (item.size() <= maxSize)
-				return item == stack.push((E) item.copy());
+				return item.equals(stack.push((E) item.copy()));
 			return false;
 		}
 		if ((item.compareTo(stack.peek()) < 0)) {
 			if (stack.size() < maxSize)
-				return item == stack.push((E) item.copy());
+				return item.equals(stack.push((E) item.copy()));
 		}
 		return false;
 	}

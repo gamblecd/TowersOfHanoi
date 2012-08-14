@@ -116,6 +116,10 @@ public class Game {
 	 */
 	@Override
 	public String toString() {
+		return "Game[gameSize=" + gameSize + ", moveCount=" + moveCounter + ", towers=" + towers+ "]";
+	}
+	
+	public String cliDraw() {
 		return (towers.get(LEFT_TOWER).cliDraw() + "\n" +
 				towers.get(MIDDLE_TOWER).cliDraw() + "\n" +
 				towers.get(RIGHT_TOWER).cliDraw());
