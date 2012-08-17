@@ -1,0 +1,18 @@
+<resources>
+
+    <string name="app_name">Android TowersOfHanoi</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_towers_main">Towers Of Hanoi</string>
+    <string name="splash_screen">Welcome to the Towers of Hanoi Game.</string>
+    <string name="rules">Here are the rules to playing.</string>
+    <string name="plate_count_label">Plates</string>
+    <string name="tower_one">Tower One</string>
+    <string name="tower_two">Tower Two</string>
+    <string name="tower_three">Tower Three</string>
+    <string name="moves_label">Moves:</string>
+    <string name="number_of_moves">A Number</string>
+    <string name="title_activity_tower_game">TowerGame</string>
+    <string name="title_activity_options_screen">OptionsScreen</string>
+
+</resources>
