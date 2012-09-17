@@ -3,7 +3,7 @@
  */
 package com.cgamble.games.towersofhanoi;
 
-import towers.Tower;
+import receivers.Tower;
 import android.app.Fragment;
 import android.os.Bundle;
 

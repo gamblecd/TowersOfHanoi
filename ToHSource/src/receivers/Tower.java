@@ -1,7 +1,7 @@
 /**
  * 
  */
-package towers;
+package receivers;
 
 import interfaces.CLInteraction;
 import interfaces.Copyable;
@@ -9,17 +9,16 @@ import interfaces.HasSize;
 
 import java.util.Stack;
 
-
 /**
  * @author $hadow$torm
  *
  */
 public class Tower<E extends HasSize & Copyable<? super E> & CLInteraction & Comparable<? super E>>
 	implements HasSize, CLInteraction {
-	private int maxSize;
+    private int maxSize;
 	private Stack<E> stack;
 	
-	/**
+		/**
 	 * Creates a new tower with a capacity of max. Max must be greater than 0 because a tower cannot be forced to have
 	 * nothing on it.
 	 * @param max > 0.
@@ -107,7 +106,6 @@ public class Tower<E extends HasSize & Copyable<? super E> & CLInteraction & Com
 			tower.append("||\n");
 		}
 		
-		
 		@SuppressWarnings("unchecked")
 		Stack<E> s = (Stack<E>) stack.clone();
 		
@@ -121,6 +119,23 @@ public class Tower<E extends HasSize & Copyable<? super E> & CLInteraction & Com
 		
 		tower.append(base.toString());
 		return tower.toString();
+	}
+	
+	public int hashCode() {
+	    return maxSize ^ stack.hashCode();
+	}
+	
+	@SuppressWarnings("unchecked")
+    @Override
+	public boolean equals(Object other) {
+	    if (other instanceof Tower) 
+            return this.equals((Tower<E>) other);
+        return false;
+    }
+	
+	private boolean equals(Tower<E> t) {
+	    // Memory equality for use as key in maps.
+	    return this == t;
 	}
 	
 	/**

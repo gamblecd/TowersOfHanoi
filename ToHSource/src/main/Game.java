@@ -6,8 +6,11 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 
+import commands.AddPlateToTower;
+import commands.RemovePlateFromTower;
+
 import plates.Plate;
-import towers.Tower;
+import receivers.Tower;
 
 /**
  * @author $hadow$torm
@@ -87,16 +90,23 @@ public class Game {
 		assert(towerFrom < towers.size());
 		Tower<Plate> t1 = towers.get(towerFrom);
 		Tower<Plate> t2 = towers.get(towerTo);
-		if (t1.peek() == null) 
-			return false;
-		
-		if (t2.push(t1.peek())) {
-			t1.pop();
-			moveCounter++;
-			return true;
-		} else {
-			return false;
+		RemovePlateFromTower removeCommand = RemovePlateFromTower.getCommand(t1);
+		Plate p;
+		if (removeCommand.execute()) {
+		    p = removeCommand.getPlate();
+		}else {
+		    return false;
 		}
+		AddPlateToTower addCommand = AddPlateToTower.getCommand(t2, p);
+		if (addCommand.execute()) {
+		    moveCounter++;
+		    return true;
+		} else {
+		    //Set the plate back on tower it came from
+		    addCommand = AddPlateToTower.getCommand(t1, p);
+		    addCommand.execute();
+	    }
+		return false;
 	}
 	
 	/**
