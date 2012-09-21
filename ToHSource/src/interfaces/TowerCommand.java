@@ -1,14 +1,14 @@
 /**
  * 
  */
-package commands;
+package interfaces;
 
 
 /**
  * @author $hadow$torm
  *
  */
-public interface Command {
+public interface TowerCommand {
     
     /**
      * Executes the command of the implementing class

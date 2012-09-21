@@ -3,6 +3,6 @@
  */
 /**
  * @author $hadow$torm
- * 
+ *
  */
-package receivers;
+package cli;

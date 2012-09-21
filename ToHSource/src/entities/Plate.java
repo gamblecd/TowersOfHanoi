@@ -1,17 +1,16 @@
 /**
  * 
  */
-package plates;
+package entities;
 
 import interfaces.CLInteraction;
-import interfaces.Copyable;
 import interfaces.HasSize;
 
 /**
  * @author $hadow$torm
  *
  */
-public class Plate implements Comparable<Plate>, Copyable<Plate>, HasSize, CLInteraction {
+public class Plate implements Comparable<Plate>, HasSize, CLInteraction {
 	private final int PLATE_SIZE;
 	private final String unit;
 	
@@ -55,6 +54,13 @@ public class Plate implements Comparable<Plate>, Copyable<Plate>, HasSize, CLInt
 		return 0;
 	}
 	
+	/** 
+	 * TODO:
+	 */
+	public Plate copy() {
+		return new Plate(this.PLATE_SIZE, this.unit);
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof Plate) 
@@ -63,27 +69,20 @@ public class Plate implements Comparable<Plate>, Copyable<Plate>, HasSize, CLInt
 	}
 	
 	/**
+	 * @see main.HasSize#size()
+	 */
+	@Override
+	public int size() {
+		return PLATE_SIZE;
+	}
+
+	/**
 	 * Returns a String of the class name, with the field names and their values.
 	 */
 	@Override 
 	public String toString() {
 		return "Plate[size=" + PLATE_SIZE +", unit= " + this.unit + "]";
 				
-	}
-	
-	/** 
-	 * @see main.Copyable#copy()
-	 */
-	public Plate copy() {
-		return new Plate(this.PLATE_SIZE, this.unit);
-	}
-
-	/**
-	 * @see main.HasSize#size()
-	 */
-	@Override
-	public int size() {
-		return PLATE_SIZE;
 	}
 
 }

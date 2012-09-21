@@ -5,4 +5,4 @@
  * @author $hadow$torm
  *
  */
-package towers;
+package entities;
