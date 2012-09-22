@@ -1,12 +1,14 @@
 package com.cgamble.games.mobiletowersofhanoi;
 
+import interfaces.Display;
 import interfaces.Move;
 import interfaces.Playable;
+
+import java.util.ArrayList;
+
 import abstracts.AbstractHanoiGame;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,9 +17,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.cgamble.games.mobiletowersofhanoi.util.AndroidThreeTowers;
 import com.cgamble.games.mobiletowersofhanoi.util.MobileMove;
 
-import entities.Plate;
 import exceptions.IllegalActionException;
 
 public class HanoiGameActivity extends Activity {
@@ -27,28 +29,49 @@ public class HanoiGameActivity extends Activity {
 	private ToggleButton to;
 	private ToggleButton from;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.app.Activity#onConfigurationChanged(android.content.res.Configuration
+	 * )
+	 */
 	@Override
 	public void onConfigurationChanged(final Configuration newConfig) {
 		// Ignore orientation change to keep activity from restarting
 		super.onConfigurationChanged(newConfig);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		game = new AndroidHanoiGame(this);
 		setContentView(R.layout.activity_hanoi_game);
+		game = new AndroidHanoiGame(new MobileDisplay(
+				findViewById(R.id.overall_collection)));
 		setSpinnerListeners();
 		game.createNewGame();
 	}
 
+	/**
+	 * Helper method to set all spinner listeners when the activity is created.
+	 */
 	public void setSpinnerListeners() {
 		Spinner spinner = (Spinner) findViewById(R.id.difficulty);
 		spinner.setOnItemSelectedListener((OnItemSelectedListener) game);
 		spinner.setSelection(1); // Default to Medium
 	}
 
-	@SuppressLint("NewApi")
+	/**
+	 * onClick Callback method for when a tower button is pushed.
+	 * 
+	 * @param v
+	 *            the View that was clicked
+	 */
 	public void makeMove(View v) {
 		if (!game.isGameOver()) {
 			if (from == null) {
@@ -60,7 +83,7 @@ public class HanoiGameActivity extends Activity {
 				from = null;
 				return;
 			}
-	
+
 			if (to == null) {
 				to = ((ToggleButton) v);
 				to.setPressed(true);
@@ -68,17 +91,20 @@ public class HanoiGameActivity extends Activity {
 			// Both from and to are filled at this point.
 			assert (to != null) && (from != null);
 			performMove();
-			
+
 			to.setChecked(false);
 			from.setChecked(false);
 			to = null;
 			from = null;
 			game.display();
-		}else {
+		} else {
 			((ToggleButton) v).setChecked(false);
 		}
 	}
 
+	/**
+	 * Helper method to encapsulate the playable actions
+	 */
 	private void performMove() {
 		game.next();
 		if (game.isGameOver()) {
@@ -86,125 +112,133 @@ public class HanoiGameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * onClick Callback method for when the exit button is clicked. Ends the
+	 * activity
+	 * 
+	 * @param v
+	 *            the button that was clicked.
+	 */
 	public void exit(View v) {
 		this.finish();
 	}
 
+	/**
+	 * onClick Callback method for when the reset button is clicked, it resets
+	 * the game.
+	 * 
+	 * @param v
+	 *            the button that was clicked
+	 */
 	public void reset(View v) {
 		game.resetGame();
 	}
 
-	private class AndroidHanoiGame extends AbstractHanoiGame implements
+	class AndroidHanoiGame extends AbstractHanoiGame implements
 			OnItemSelectedListener {
 
-		private final int DEFAULT_GAME_SIZE = 5;
-		private final int ERROR_COLOR = Color.RED;
-		private final int NORMAL_COLOR = Color.WHITE;
+		final static int DEFAULT_GAME_SIZE = 5;
+
+		private Display display;
 		private int currentGameSize = DEFAULT_GAME_SIZE;
-		private String message = "";
-		private String error = "";
 
-		private Activity context;
-
-		public AndroidHanoiGame(Activity a) {
-			this(a, 5);
+		public AndroidHanoiGame(Display d) {
+			this(d, DEFAULT_GAME_SIZE);
 		}
 
-		public AndroidHanoiGame(Activity a, int gameSize) {
-			context = a;
+		/**
+		 * Creates a new Tower of Hanoi game with gameSize plates for use with
+		 * an Android Activity
+		 * 
+		 * @param Display
+		 *            the display for this game to interact with.
+		 * @param gameSize
+		 *            the number of plates to play with
+		 */
+		public AndroidHanoiGame(Display display, int gameSize) {
+			this.display = display;
 			currentGameSize = gameSize;
 		}
 
-		@Override
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see interfaces.Playable#createNewGame()
+		 */
 		public Playable createNewGame() {
-			// Starts the Activity to get the number of plates to start the game
-			// with.
-			message = getString(R.string.welcome_text);
+			display.setPlayableMessage(getString(R.string.welcome_text));
 			buildGame(currentGameSize);
 			return this;
 		}
 
 		@Override
+		protected void buildGame(int gameSize) {
+			moves = new ArrayList<Move>();
+			towers = new AndroidThreeTowers(gameSize);
+			resetGame();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see abstracts.AbstractHanoiGame#resetGame()
+		 */
 		public void resetGame() {
 			super.resetGame();
-			if (from != null) from.setChecked(false);
-			if (to != null) to.setChecked(false);
+			if (from != null)
+				from.setChecked(false);
+			if (to != null)
+				to.setChecked(false);
 			from = null;
 			to = null;
 			display();
 		}
 
-		@Override
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see interfaces.Playable#display()
+		 */
 		public void display() {
-			// update text for buttons
-			ToggleButton button;
-			Plate p;
-			String display;
-
-			button = (ToggleButton) findViewById(R.id.left_tower);
-			p = towers.getLeftTower().peek();
-			display = p != null ? p.size() + "" : "--";
-			button.setTextOn(display);
-			button.setTextOff(display);
-			button.setText(display);
-
-			button = (ToggleButton) findViewById(R.id.center_tower);
-			p = towers.getCenterTower().peek();
-			display = p != null ? p.size() + "" : "--";
-			button.setTextOn(display);
-			button.setTextOff(display);
-			button.setText(display);
-
-			button = (ToggleButton) findViewById(R.id.right_tower);
-			p = towers.getRightTower().peek();
-			display = p != null ? p.size() + "" : "--";
-			button.setTextOn(display);
-			button.setTextOff(display);
-			button.setText(display);
-
-			TextView movesText = (TextView) findViewById(R.id.moves_text);
-			movesText.setText("Moves: " + getNumberOfMoves());
-
-			// Update other things
-			TextView messageBox = (TextView) findViewById(R.id.message_box_text);
-			if (error != "") {
-				messageBox.setTextColor(ERROR_COLOR);
-				messageBox.setText(error);
-				error = "";
-			} else {
-				messageBox.setTextColor(NORMAL_COLOR);
-				messageBox.setText(message);
-				message = "";
-			}
+			display.display(this);
+			display.display(towers);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see interfaces.Playable#endGame()
+		 */
 		@Override
 		public void endGame() {
 			int moves = getNumberOfMoves();
-			message = getString(R.string.end_game_text, moves);
-			//error = getString(R.string.end_game_text, moves);
+			display.setPlayableMessage(getString(R.string.end_game_text, moves));
 		}
 
-		private boolean performMove(Move m) {
-			try {
-				m.move(towers);
-			} catch (IllegalActionException badMove) {
-				return false;
-			}
-			return true;
-		}
-
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see interfaces.Playable#next()
+		 */
 		@Override
 		public Playable next() {
 			Move move = new MobileMove(from, to);
-			if (performMove(move)) {
-				this.moves.add(move);
-			} else {
-				error = getString(R.string.invalid_move);
+			try {
+				move.move(towers);
+				moves.add(move);
+			} catch (IllegalActionException badMove) {
+				display.setPlayableError(getString(R.string.invalid_move));
 			}
 			return this;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(
+		 * android.widget.AdapterView, android.view.View, int, long)
+		 */
 		@Override
 		public void onItemSelected(AdapterView<?> adapter, View v, int pos,
 				long id) {
@@ -218,6 +252,13 @@ public class HanoiGameActivity extends Activity {
 			createNewGame();
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected
+		 * (android.widget.AdapterView)
+		 */
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
 			currentGameSize = DEFAULT_GAME_SIZE;
