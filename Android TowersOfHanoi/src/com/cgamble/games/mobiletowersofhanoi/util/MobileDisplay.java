@@ -1,32 +1,34 @@
 package com.cgamble.games.mobiletowersofhanoi.util;
 
+import interfaces.Display;
+import interfaces.Playable;
 import interfaces.Tower;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import entities.Plate;
+import interfaces.Towers;
+import android.content.Context;
 
 public class MobileDisplay implements Display {
-
-	@Override
-	public void display(Tower tower, View view) {
+	private Context context;
+	
+	public MobileDisplay(Context context) {
+		this.context = context;
 	}
 
 	@Override
-	public void display(Button button, View view) {
+	public void display(Tower tower) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void display(Plate plate, View view) {
+	public void display(Playable playable) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void display(TextView textView, View view) {
+	public void display(Towers towers) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

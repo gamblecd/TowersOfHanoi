@@ -7,6 +7,7 @@
     <string name="title_activity_hanoi_game">Towers of Hanoi - Mobile</string>
 
     <!-- Main Hanoi Game -->
+    <string name="welcome_text">Welcome to the Towers Of Hanoi.</string>
     <string name="left_tower">Tower 1</string>
     <string name="center_tower">Tower 2</string>
     <string name="right_tower">Tower 3</string>

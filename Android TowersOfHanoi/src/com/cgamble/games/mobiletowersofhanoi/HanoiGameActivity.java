@@ -3,6 +3,7 @@ package com.cgamble.games.mobiletowersofhanoi;
 import interfaces.Move;
 import interfaces.Playable;
 import abstracts.AbstractHanoiGame;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -10,20 +11,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.cgamble.games.mobiletowersofhanoi.util.MobileMove;
 
 import entities.Plate;
+import exceptions.IllegalActionException;
 
 public class HanoiGameActivity extends Activity {
 
 	public final String INTENT_KEY_MOVES = "com.cgamble.games.mobiletowersofhanoi.GET_MOVES_FROM_INTENT";
 	private Playable game;
-	private Button to;
-	private Button from;
+	private ToggleButton to;
+	private ToggleButton from;
 
 	@Override
 	public void onConfigurationChanged(final Configuration newConfig) {
@@ -36,31 +38,49 @@ public class HanoiGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		game = new AndroidHanoiGame(this);
 		setContentView(R.layout.activity_hanoi_game);
+		setSpinnerListeners();
 		game.createNewGame();
+	}
+
+	public void setSpinnerListeners() {
 		Spinner spinner = (Spinner) findViewById(R.id.difficulty);
 		spinner.setOnItemSelectedListener((OnItemSelectedListener) game);
 		spinner.setSelection(1); // Default to Medium
-
 	}
 
+	@SuppressLint("NewApi")
 	public void makeMove(View v) {
-		if (from == null) {
-			from = ((Button) v);
-			from.setEnabled(true);
-			return;
+		if (!game.isGameOver()) {
+			if (from == null) {
+				from = ((ToggleButton) v);
+				from.setChecked(true);
+				return;
+			} else if (from.equals(v)) {
+				from.setChecked(false);
+				from = null;
+				return;
+			}
+	
+			if (to == null) {
+				to = ((ToggleButton) v);
+				to.setPressed(true);
+			}
+			// Both from and to are filled at this point.
+			assert (to != null) && (from != null);
+			performMove();
+			
+			to.setChecked(false);
+			from.setChecked(false);
+			to = null;
+			from = null;
+			game.display();
+		}else {
+			((ToggleButton) v).setChecked(false);
 		}
-
-		if (to == null) {
-			to = ((Button) v);
-		}
-		// Both from and to are filled at this point.
-		assert (to != null) && (from != null);
-		performMove();
 	}
 
 	private void performMove() {
 		game.next();
-		game.display();
 		if (game.isGameOver()) {
 			game.endGame();
 		}
@@ -72,7 +92,6 @@ public class HanoiGameActivity extends Activity {
 
 	public void reset(View v) {
 		game.resetGame();
-		game.display();
 	}
 
 	private class AndroidHanoiGame extends AbstractHanoiGame implements
@@ -80,7 +99,7 @@ public class HanoiGameActivity extends Activity {
 
 		private final int DEFAULT_GAME_SIZE = 5;
 		private final int ERROR_COLOR = Color.RED;
-		private final int NORMAL_COLOR = Color.BLACK;
+		private final int NORMAL_COLOR = Color.WHITE;
 		private int currentGameSize = DEFAULT_GAME_SIZE;
 		private String message = "";
 		private String error = "";
@@ -100,31 +119,47 @@ public class HanoiGameActivity extends Activity {
 		public Playable createNewGame() {
 			// Starts the Activity to get the number of plates to start the game
 			// with.
+			message = getString(R.string.welcome_text);
 			buildGame(currentGameSize);
-			display();
 			return this;
+		}
+
+		@Override
+		public void resetGame() {
+			super.resetGame();
+			if (from != null) from.setChecked(false);
+			if (to != null) to.setChecked(false);
+			from = null;
+			to = null;
+			display();
 		}
 
 		@Override
 		public void display() {
 			// update text for buttons
-			Button button;
+			ToggleButton button;
 			Plate p;
 			String display;
 
-			button = (Button) findViewById(R.id.left_tower);
+			button = (ToggleButton) findViewById(R.id.left_tower);
 			p = towers.getLeftTower().peek();
 			display = p != null ? p.size() + "" : "--";
+			button.setTextOn(display);
+			button.setTextOff(display);
 			button.setText(display);
 
-			button = (Button) findViewById(R.id.center_tower);
+			button = (ToggleButton) findViewById(R.id.center_tower);
 			p = towers.getCenterTower().peek();
 			display = p != null ? p.size() + "" : "--";
+			button.setTextOn(display);
+			button.setTextOff(display);
 			button.setText(display);
 
-			button = (Button) findViewById(R.id.right_tower);
+			button = (ToggleButton) findViewById(R.id.right_tower);
 			p = towers.getRightTower().peek();
 			display = p != null ? p.size() + "" : "--";
+			button.setTextOn(display);
+			button.setTextOff(display);
 			button.setText(display);
 
 			TextView movesText = (TextView) findViewById(R.id.moves_text);
@@ -146,12 +181,17 @@ public class HanoiGameActivity extends Activity {
 		@Override
 		public void endGame() {
 			int moves = getNumberOfMoves();
-			TextView messageBox = (TextView) findViewById(R.id.message_box_text);
-			messageBox.setText(getString(R.string.end_game_text, moves));
+			message = getString(R.string.end_game_text, moves);
+			//error = getString(R.string.end_game_text, moves);
 		}
 
 		private boolean performMove(Move m) {
-			return m.move(towers);
+			try {
+				m.move(towers);
+			} catch (IllegalActionException badMove) {
+				return false;
+			}
+			return true;
 		}
 
 		@Override
@@ -162,20 +202,17 @@ public class HanoiGameActivity extends Activity {
 			} else {
 				error = getString(R.string.invalid_move);
 			}
-
-			to = null;
-			from = null;
 			return this;
 		}
 
 		@Override
 		public void onItemSelected(AdapterView<?> adapter, View v, int pos,
 				long id) {
-			String choice = ((TextView) v).getText().toString();
 			try {
+				String choice = ((TextView) v).getText().toString();
 				currentGameSize = Integer.parseInt(choice.substring(choice
 						.length() - 1));
-			} catch (NumberFormatException nfe) {
+			} catch (Exception nfe) {
 				currentGameSize = DEFAULT_GAME_SIZE;
 			}
 			createNewGame();
