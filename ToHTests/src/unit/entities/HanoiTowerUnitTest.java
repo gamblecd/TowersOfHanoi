@@ -22,9 +22,6 @@ import entities.Plate;
 public class HanoiTowerUnitTest {
 
 	private HanoiTower t1;
-	private HanoiTower t2;
-	private HanoiTower t3;
-	
 	
 	/**
 	 * @throws java.lang.Exception
@@ -32,8 +29,6 @@ public class HanoiTowerUnitTest {
 	@Before
 	public void setUp() throws Exception {
 		t1 = new HanoiTower(3);
-		t2 = new HanoiTower(5);
-		t3 = new HanoiTower(8);
 	}
 
 	/**
@@ -68,66 +63,6 @@ public class HanoiTowerUnitTest {
 		t1.pushOnto(new Plate(2));
 		assertEquals("Not equals", t1.pop(), new Plate(2));
 		assertEquals("Not equals", 0, t1.size());
-	}
-	
-	@Test
-	public void testCLIDraw() {
-		assertEquals("Failure", t1.cliDraw(),
-				"    ||\n" + 
-				"    ||\n" +
-				"    ||\n" +
-				"    ||\n" +
-				"mmmmmmmmmm");
-		assertEquals("Failure", t2.cliDraw(),
-				"      ||\n" +
-				"      ||\n" +
-				"      ||\n" +
-				"      ||\n" +
-				"      ||\n" +
-				"      ||\n" +
-				"mmmmmmmmmmmmmm");
-		assertEquals("Failure", t3.cliDraw(),
-				"         ||\n" +
-				"         ||\n" +
-				"         ||\n" +
-				"         ||\n" +
-				"         ||\n" +
-				"         ||\n" +
-				"         ||\n" +
-				"         ||\n" +
-				"         ||\n" +
-				"mmmmmmmmmmmmmmmmmmmm");
-		t2.pushOnto(new Plate(5));
-		t2.pushOnto(new Plate(4));
-		t2.pushOnto(new Plate(3));
-		t2.pushOnto(new Plate(2));
-		t2.pushOnto(new Plate(1));
-		t3.pushOnto(new Plate(7));
-		t3.pushOnto(new Plate(6));
-		t3.pushOnto(new Plate(5));
-		t3.pushOnto(new Plate(4));
-		t3.pushOnto(new Plate(3));
-		t3.pushOnto(new Plate(2));
-		t3.pushOnto(new Plate(1));
-		assertEquals("Failure", t3.cliDraw(),
-				"         ||\n" +
-				"         ||\n" +
-				"         ==\n" +
-				"        ====\n" +
-				"       ======\n" +
-				"      ========\n" +
-				"     ==========\n" +
-				"    ============\n" +
-				"   ==============\n" +
-				"mmmmmmmmmmmmmmmmmmmm");
-		assertEquals("Failure", t2.cliDraw(),
-				"      ||\n" +
-				"      ==\n" +
-				"     ====\n" +
-				"    ======\n" +
-				"   ========\n" +
-				"  ==========\n" +
-				"mmmmmmmmmmmmmm");
-	}
 
+	}
 }
