@@ -8,9 +8,11 @@ import interfaces.TriTowers;
 
 import java.io.PrintStream;
 
+import abstracts.AbstractDisplay;
+
 import entities.Plate;
 
-public class CLIDisplay implements Display {
+public class CLIDisplay extends AbstractDisplay implements Display {
 
 	private PrintStream output;
 

@@ -22,4 +22,16 @@ public interface Display {
 	 * @param playable
 	 */
 	public void display(Playable playable);
+	
+	/**
+	 * Sets an error to be displayed the next time display(Playable) is called.
+	 * @param error the message to display
+	 */
+	public void setPlayableError(String error);
+	
+	/**
+	 * Sets a message to be displayed the next time display(Playable) is called.
+	 * @param error the message to display
+	 */
+	public void setPlayableMessage(String message);
 }
