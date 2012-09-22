@@ -10,7 +10,7 @@ import interfaces.HasSize;
  * @author $hadow$torm
  *
  */
-public class Plate implements Comparable<Plate>, HasSize, CLInteraction {
+public class Plate implements Comparable<Plate>, HasSize, CLInteraction, Cloneable {
 	private final int PLATE_SIZE;
 	private final String unit;
 	
@@ -54,10 +54,8 @@ public class Plate implements Comparable<Plate>, HasSize, CLInteraction {
 		return 0;
 	}
 	
-	/** 
-	 * TODO:
-	 */
-	public Plate copy() {
+	@Override
+	public Plate clone() {
 		return new Plate(this.PLATE_SIZE, this.unit);
 	}
 	

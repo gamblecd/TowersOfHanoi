@@ -3,7 +3,7 @@ package abstracts;
 import interfaces.Move;
 import interfaces.Playable;
 import interfaces.Tower;
-import interfaces.Towers;
+import interfaces.TriTowers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import entities.ThreeTowers;
 public abstract class AbstractHanoiGame implements Playable{
 
 	protected List<Move> moves;
-	protected Towers towers;
+	protected TriTowers towers;
 
 	protected void buildGame(int gameSize) {
 		moves = new ArrayList<Move>();

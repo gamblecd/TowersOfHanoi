@@ -1,16 +1,17 @@
 package abstracts;
 
 import interfaces.Move;
-import interfaces.Towers;
+import interfaces.TriTowers;
 import interfaces.Tower;
 import entities.Plate;
+import exceptions.IllegalActionException;
 
 public abstract class AbstractThreeWayMove implements Move {
 
 	public static enum TowerEnum {
 		CENTER, LEFT, RIGHT;
 
-		private Plate getPlateToMove(Towers t) {
+		private Plate getPlateToMove(TriTowers t) {
 			switch (this) {
 			case LEFT:
 				return t.getLeftTower().peek();
@@ -22,8 +23,8 @@ public abstract class AbstractThreeWayMove implements Move {
 				return null;
 			}
 		}
-		
-		private Tower getTower(Towers t) {
+
+		private Tower getTower(TriTowers t) {
 			switch (this) {
 			case LEFT:
 				return t.getLeftTower();
@@ -36,18 +37,18 @@ public abstract class AbstractThreeWayMove implements Move {
 			}
 		}
 	}
-	
+
 	protected TowerEnum from;
 	protected TowerEnum to;
-	
-	public boolean move(Towers towers) {
+
+	public void move(TriTowers towers) throws IllegalActionException {
 		Plate p = from.getPlateToMove(towers);
 		if (p != null) {
 			if (to.getTower(towers).pushOnto(p)) {
 				from.getTower(towers).pop();
-				return true;
 			}
 		}
-		return false;
+		throw new IllegalActionException("Cannot perform the move from " + from
+				+ " to " + to + ".");
 	}
 }

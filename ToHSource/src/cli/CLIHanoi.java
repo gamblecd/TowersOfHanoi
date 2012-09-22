@@ -1,6 +1,6 @@
 package cli;
 
-import interfaces.CLInteraction;
+import interfaces.Display;
 import interfaces.Move;
 import interfaces.Playable;
 
@@ -12,13 +12,15 @@ import java.util.List;
 import java.util.Scanner;
 
 import abstracts.AbstractHanoiGame;
+import exceptions.IllegalActionException;
 
 
 
-public class CLIHanoi extends AbstractHanoiGame implements CLInteraction {
+public class CLIHanoi extends AbstractHanoiGame{
 
 	private Scanner in;
 	private PrintStream out;
+	private Display display;
 	private boolean reset;
 	private boolean fastExit;
 	private List<String> exitOptions = Arrays.asList("e", "q", "exit", "quit");
@@ -43,7 +45,7 @@ public class CLIHanoi extends AbstractHanoiGame implements CLInteraction {
 			this.out = (PrintStream) out;
 		}
 		this.in = new Scanner(input);
-		
+		this.display = new CLIDisplay(this.out);
 		fastExit = false;
 		reset = false;
 	}
@@ -57,13 +59,6 @@ public class CLIHanoi extends AbstractHanoiGame implements CLInteraction {
 		fastExit = exitOptions.contains(test);
 		reset = resetOptions.contains(test);
 		return input;
-	}
-
-	@Override
-	public String cliDraw() {
-		return (towers.getLeftTower().cliDraw() + "\n"
-				+ towers.getCenterTower().cliDraw() + "\n" + towers
-				.getRightTower().cliDraw());
 	}
 
 	@Override
@@ -162,6 +157,7 @@ public class CLIHanoi extends AbstractHanoiGame implements CLInteraction {
 	private void play() {
 		int towerOne = 0, towerTwo = 0;
 		boolean firstTry = true;
+		boolean success = false;
 		Move m;
 		String firstPrompt = "Choose the tower to move a plate from. (Left [1], Middle [2], Right [3])";
 		String errorResponse = "Invalid Option. Choose a proper tower. (Left [1], Middle [2], Right [3])";
@@ -183,7 +179,13 @@ public class CLIHanoi extends AbstractHanoiGame implements CLInteraction {
 			towerTwo = getMove(secondPrompt, errorResponse);
 
 			m = new CLIMove(towerOne, towerTwo);
-		} while (reset || !towers.applyMove(m));
+			try {
+				towers.applyMove(m);
+				success = true;
+			} catch (IllegalActionException badMove) {
+				
+			}
+		} while (reset || success);
 		moves.add(m);
 
 	}
@@ -193,8 +195,11 @@ public class CLIHanoi extends AbstractHanoiGame implements CLInteraction {
 		return super.isGameOver() || fastExit;
 	}
 
+	/**
+	 * Helper method to abstract the printing.
+	 */
 	private void printTowers() {
-		out.println(cliDraw());
+		display.display(towers);
 	}
 
 	/**

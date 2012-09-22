@@ -2,18 +2,12 @@ package interfaces;
 
 import entities.Plate;
 
-public interface Tower {
+public interface Tower extends Cloneable {
 
 	/**
 	 * Empties the tower to have a size of 0 again, nothing is returned, the values are thrown away.
 	 */
 	public void clear();
-
-	public String cliDraw();
-
-	public boolean equals(Object other);
-
-	public int hashCode();
 
 	/**
 	 * Returns a copy of the object at the top of the tower. If the tower is empty, returns null.
@@ -43,10 +37,29 @@ public interface Tower {
 	 * @return the current size of the tower.
 	 */
 	public int size();
+	
+	/**
+	 * Returns the maximum size of the tower.
+	 * @return the maximum size of the tower.
+	 */
+	public int maxSize();
 
+	/**
+	 * Returns a deep copy of the tower implementation.
+	 * @return a deep copy of this
+	 */
+	public Tower cloneTower();
+	
 	/**
 	 * Returns a String of the class name, with the field names and their values.
 	 */
+	@Override
 	public String toString();
+	
+	@Override
+	public boolean equals(Object other);
+
+	@Override
+	public int hashCode();
 
 }

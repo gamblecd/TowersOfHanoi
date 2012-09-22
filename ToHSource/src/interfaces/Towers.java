@@ -1,18 +1,18 @@
 package interfaces;
 
-import entities.HanoiTower;
-
 public interface Towers {
-	
-	public boolean applyMove(Move m);
-	
-	public Iterable<HanoiTower> getAllTowers();
 
-	public HanoiTower getCenterTower();
+	/**
+	 * Returns a copy of all towers held in reference in the implementation, no order
+	 * is guaranteed by the iterable.
+	 * @return an iterable if all towers in the Towers
+	 */
+	public Iterable<Tower> getAllTowers();
 
-	public Tower getLeftTower();
-	
+	/**
+	 * Returns the number of plates that are contained within all of the towers in this.
+	 * @return the number of plates in the towers
+	 */
 	public int getPlateCount();
-	
-	public HanoiTower getRightTower();
+
 }

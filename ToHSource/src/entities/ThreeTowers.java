@@ -2,14 +2,16 @@ package entities;
 
 import interfaces.Move;
 import interfaces.Tower;
-import interfaces.Towers;
+import interfaces.TriTowers;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import exceptions.IllegalActionException;
 
-public class ThreeTowers implements Towers {
+
+public class ThreeTowers implements TriTowers {
 
 	private HanoiTower center;
 	private HanoiTower left;
@@ -27,13 +29,13 @@ public class ThreeTowers implements Towers {
 	}
 
 	@Override
-	public boolean applyMove(Move m) {
-		return m.move(this);
+	public void applyMove(Move m) throws IllegalActionException {
+		m.move(this);
 	}
 
 	@Override
-	public Iterable<HanoiTower> getAllTowers() {
-		List<HanoiTower> iter = new LinkedList<HanoiTower>();
+	public Iterable<Tower> getAllTowers() {
+		List<Tower> iter = new LinkedList<Tower>();
 		iter.add(left);
 		iter.add(center);
 		iter.add(right);
@@ -60,6 +62,7 @@ public class ThreeTowers implements Towers {
 		return right;
 	}
 	
+	@Override
 	public String toString() {
 		return  "ThreeTowers[" + 
 				"LEFT=" + left + ", " + 

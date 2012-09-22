@@ -10,5 +10,9 @@ package interfaces;
  */
 public interface HasSize {
 
+	/**
+	 * Returns the size of the implementing object in a way that makes sense for that object.
+	 * @return int representing size.
+	 */
 	public int size();
 }

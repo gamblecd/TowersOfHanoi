@@ -3,7 +3,6 @@
  */
 package entities;
 
-import interfaces.CLInteraction;
 import interfaces.HasSize;
 import interfaces.Tower;
 
@@ -14,7 +13,7 @@ import java.util.Stack;
  * @author $hadow$torm
  *
  */
-public class HanoiTower extends Stack<Plate> implements HasSize, CLInteraction, Tower {
+public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 	private static final long serialVersionUID = 2547452368202527253L;
 	private int maxSize;
 	
@@ -28,41 +27,7 @@ public class HanoiTower extends Stack<Plate> implements HasSize, CLInteraction, 
 			throw new IllegalArgumentException("Integer max must b greater 0. A Tower cannot have a max of 0.");
 		maxSize = max;
 	}
-	
-	/* (non-Javadoc)
-	 * @see entities.Tower#cliDraw()
-	 */
-	@Override
-	public String cliDraw() {
-		StringBuilder base = new StringBuilder();
-		StringBuilder tower= new StringBuilder();
-		int middle = (maxSize + 1);
-		for (int i=0; i<maxSize + 2; i++) {
-			base.append("mm");
-		}
 		
-		for (int i=0; i<(maxSize+1 - size()); i++) {
-			for (int j=0; j<middle; j++){
-				tower.append(" ");	
-			}
-			tower.append("||\n");
-		}
-		
-		@SuppressWarnings("unchecked")
-		Stack<Plate> s = (Stack<Plate>) this.clone();
-		
-		for (int i=0; i<size(); i++) {
-			Plate temp = s.pop();
-			for (int j=0; j<middle - (temp.size() - 1); j++){
-				tower.append(" ");	
-			}
-			tower.append(temp.cliDraw() + "\n");
-		}
-		
-		tower.append(base.toString());
-		return tower.toString();
-	}
-	
 	private boolean equals(HanoiTower t) {
 	    return (this.maxSize == t.maxSize) && super.equals((Stack<Plate>) t);
 	}
@@ -92,7 +57,7 @@ public class HanoiTower extends Stack<Plate> implements HasSize, CLInteraction, 
 	public Plate peek() {
 		if (isEmpty())
 			return null;
-		return super.peek().copy();
+		return super.peek().clone();
 	}
 	
 	/* (non-Javadoc)
@@ -106,7 +71,7 @@ public class HanoiTower extends Stack<Plate> implements HasSize, CLInteraction, 
 	}
 	
     /* (non-Javadoc)
-	 * @see entities.Tower#push(entities.Plate)
+	 * @see entities.Tower#pushOnto(entities.Plate)
 	 */
 	@Override
 	public boolean pushOnto(Plate p) {
@@ -122,11 +87,25 @@ public class HanoiTower extends Stack<Plate> implements HasSize, CLInteraction, 
 		return false;
 	}
 	
+    /* (non-Javadoc)
+	 * @see entities.Tower#clone()
+	 */
+	public Tower cloneTower() {
+		HanoiTower p = (HanoiTower) this.clone();
+		p.maxSize = this.maxSize;
+		return p;
+	}
+	
 	/* (non-Javadoc)
 	 * @see entities.Tower#toString()
 	 */
 	@Override
 	public String toString() {
 		return "Tower[size=" + size() +", maxSize="+ maxSize + "]";
+	}
+
+	@Override
+	public int maxSize() {
+		return maxSize;
 	}
 }
