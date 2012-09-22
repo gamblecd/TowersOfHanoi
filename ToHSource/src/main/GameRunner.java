@@ -5,7 +5,7 @@ import cli.CLIHanoi;
 
 public class GameRunner {
 
-	public static void main(String args []) {
+	public static void main(String args[]) {
 		Playable p = getPlayable(parseArgs(args));
 		do {
 			p.createNewGame();
@@ -14,11 +14,12 @@ public class GameRunner {
 				p.next();
 			} while (!p.isGameOver());
 			p.endGame();
-		}while (restart());
+		} while (restart());
 	}
-	
+
 	/**
 	 * Creates a new Playable based on the given type and returns it.
+	 * 
 	 * @param type
 	 * @returns the Playable created by this method
 	 */
@@ -31,6 +32,7 @@ public class GameRunner {
 
 	/**
 	 * Parses the args and returns a string of recognizable commands for this.
+	 * 
 	 * @param args
 	 * @return
 	 */
@@ -38,9 +40,10 @@ public class GameRunner {
 		String type = "CommandLine";
 		return type;
 	}
-	
+
 	/**
 	 * Returns true if the user wants to restart the game.
+	 * 
 	 * @return
 	 */
 	private static boolean restart() {

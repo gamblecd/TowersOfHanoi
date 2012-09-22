@@ -9,7 +9,9 @@ public class IllegalActionException extends Exception {
 
 	/**
 	 * Creates a new IllegalActionException
-	 * @param message a message describing why the exception was created.
+	 * 
+	 * @param message
+	 *            a message describing why the exception was created.
 	 */
 	public IllegalActionException(String message) {
 		super(message);

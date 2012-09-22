@@ -1,6 +1,3 @@
-/**
- * 
- */
 package entities;
 
 import interfaces.HasSize;
@@ -8,49 +5,53 @@ import interfaces.Tower;
 
 import java.util.Stack;
 
-
-/**
- * @author $hadow$torm
- *
- */
 public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 	private static final long serialVersionUID = 2547452368202527253L;
 	private int maxSize;
-	
+
 	/**
-	 * Creates a new tower with a capacity of max. Max must be greater than 0 because a tower cannot be forced to have
-	 * nothing on it.
-	 * @param max > 0.
+	 * Creates a new tower with a capacity of max. Max must be greater than 0
+	 * because a tower cannot be forced to have nothing on it.
+	 * 
+	 * @param max
+	 *            > 0.
 	 */
 	public HanoiTower(int max) {
-		if (max < 1) 
-			throw new IllegalArgumentException("Integer max must b greater 0. A Tower cannot have a max of 0.");
+		if (max < 1)
+			throw new IllegalArgumentException(
+					"Integer max must b greater 0. A Tower cannot have a max of 0.");
 		maxSize = max;
 	}
-		
+
 	private boolean equals(HanoiTower t) {
-	    return (this.maxSize == t.maxSize) && super.equals((Stack<Plate>) t);
+		return (this.maxSize == t.maxSize) && super.equals((Stack<Plate>) t);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see entities.Tower#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object other) {
-	    if (other instanceof HanoiTower) 
-            return this.equals((HanoiTower) other);
-        return false;
-    }
-	
-	/* (non-Javadoc)
+		if (other instanceof HanoiTower)
+			return this.equals((HanoiTower) other);
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see entities.Tower#hashCode()
 	 */
 	@Override
 	public int hashCode() {
-	    return maxSize ^ super.hashCode();
+		return maxSize ^ super.hashCode();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see entities.Tower#peek()
 	 */
 	@Override
@@ -59,8 +60,10 @@ public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 			return null;
 		return super.peek().clone();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see entities.Tower#pop()
 	 */
 	@Override
@@ -69,8 +72,10 @@ public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 			return null;
 		return super.pop();
 	}
-	
-    /* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see entities.Tower#pushOnto(entities.Plate)
 	 */
 	@Override
@@ -86,8 +91,10 @@ public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 		}
 		return false;
 	}
-	
-    /* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see entities.Tower#clone()
 	 */
 	public Tower cloneTower() {
@@ -95,13 +102,15 @@ public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 		p.maxSize = this.maxSize;
 		return p;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see entities.Tower#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Tower[size=" + size() +", maxSize="+ maxSize + "]";
+		return "Tower[size=" + size() + ", maxSize=" + maxSize + "]";
 	}
 
 	@Override

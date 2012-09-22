@@ -18,6 +18,11 @@ public class CLIDisplay implements Display {
 		this.output = out;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.Display#display(interfaces.Tower)
+	 */
 	@Override
 	public void display(Tower tower) {
 		int maxSize = tower.maxSize();
@@ -49,6 +54,11 @@ public class CLIDisplay implements Display {
 		output.println(towerDisplay.toString());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.Display#display(interfaces.Towers)
+	 */
 	@Override
 	public void display(Towers towers) {
 		TriTowers triTowers = (TriTowers) towers;
@@ -57,10 +67,14 @@ public class CLIDisplay implements Display {
 		display(triTowers.getRightTower());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.Display#display(interfaces.Playable)
+	 */
 	@Override
 	public void display(Playable playable) {
-		// TODO Auto-generated method stub
-
+		output.println("Moves: " + playable.getNumberOfMoves());
 	}
 
 }

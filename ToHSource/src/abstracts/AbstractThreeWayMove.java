@@ -11,6 +11,14 @@ public abstract class AbstractThreeWayMove implements Move {
 	public static enum TowerEnum {
 		CENTER, LEFT, RIGHT;
 
+		/**
+		 * Private method to get the the plate of one of the towers provided in
+		 * the give TriTowers
+		 * 
+		 * @param t
+		 *            a set of towers to retrieve the plate from.
+		 * @return a copy of the top plate on the tower specified by this
+		 */
 		private Plate getPlateToMove(TriTowers t) {
 			switch (this) {
 			case LEFT:
@@ -24,6 +32,13 @@ public abstract class AbstractThreeWayMove implements Move {
 			}
 		}
 
+		/**
+		 * Returns a reference to the Tower specified by this, contained in t
+		 * 
+		 * @param t
+		 *            the towers to look for the plate specified by this.
+		 * @return a tower reference specified by this.
+		 */
 		private Tower getTower(TriTowers t) {
 			switch (this) {
 			case LEFT:
@@ -41,6 +56,11 @@ public abstract class AbstractThreeWayMove implements Move {
 	protected TowerEnum from;
 	protected TowerEnum to;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.Move#move(interfaces.TriTowers)
+	 */
 	public void move(TriTowers towers) throws IllegalActionException {
 		Plate p = from.getPlateToMove(towers);
 		if (p != null) {

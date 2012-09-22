@@ -10,14 +10,13 @@ import java.util.List;
 
 import exceptions.IllegalActionException;
 
-
 public class ThreeTowers implements TriTowers {
 
 	private HanoiTower center;
 	private HanoiTower left;
 	private int numberOfPlates;
 	private HanoiTower right;
-	
+
 	public ThreeTowers(int sizeOfGame) {
 		this.left = new HanoiTower(sizeOfGame);
 		this.center = new HanoiTower(sizeOfGame);
@@ -61,13 +60,11 @@ public class ThreeTowers implements TriTowers {
 	public HanoiTower getRightTower() {
 		return right;
 	}
-	
+
 	@Override
 	public String toString() {
-		return  "ThreeTowers[" + 
-				"LEFT=" + left + ", " + 
-				"CENTER=" + center + ", " + 
-				"RIGHT=" + center + "]";
+		return "ThreeTowers[" + "LEFT=" + left + ", " + "CENTER=" + center
+				+ ", " + "RIGHT=" + center + "]";
 	}
 
 }

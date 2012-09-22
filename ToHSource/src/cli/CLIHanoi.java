@@ -5,7 +5,6 @@ import interfaces.Move;
 import interfaces.Playable;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
@@ -14,9 +13,7 @@ import java.util.Scanner;
 import abstracts.AbstractHanoiGame;
 import exceptions.IllegalActionException;
 
-
-
-public class CLIHanoi extends AbstractHanoiGame{
+public class CLIHanoi extends AbstractHanoiGame {
 
 	private Scanner in;
 	private PrintStream out;
@@ -35,7 +32,20 @@ public class CLIHanoi extends AbstractHanoiGame{
 		this(in, null);
 	}
 
-	public CLIHanoi(InputStream in, OutputStream out) {
+	public CLIHanoi(PrintStream out) {
+		this(null, out);
+	}
+
+	/**
+	 * Creates a new Command Line Interface for a Towers of Hanoi Game where the
+	 * interactions are specified by in and out.
+	 * 
+	 * @param in
+	 *            The input stream to read user input from.
+	 * @param out
+	 *            The print stream to send messages to the user with.
+	 */
+	public CLIHanoi(InputStream in, PrintStream out) {
 		InputStream input = System.in;
 		this.out = System.out;
 		if (in != null) {
@@ -50,10 +60,14 @@ public class CLIHanoi extends AbstractHanoiGame{
 		reset = false;
 	}
 
-	public CLIHanoi(OutputStream out) {
-		this(null, out);
-	}
-
+	/**
+	 * Helper method to check for possible reset or quite commands. If any are
+	 * found, then the respective booleans will be set.
+	 * 
+	 * @param input
+	 *            the string to check
+	 * @return the string provided
+	 */
 	private String checkForResetString(String input) {
 		String test = input.toLowerCase();
 		fastExit = exitOptions.contains(test);
@@ -61,7 +75,18 @@ public class CLIHanoi extends AbstractHanoiGame{
 		return input;
 	}
 
-	@Override
+	/**
+	 * Prints a welcome message to the output
+	 */
+	private void printWelcome() {
+		out.println("Welcome to Towers of Hanoi.");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.Playable#createNewGame()
+	 */
 	public Playable createNewGame() {
 		printWelcome();
 
@@ -75,17 +100,26 @@ public class CLIHanoi extends AbstractHanoiGame{
 		return this;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.Playable#display()
+	 */
 	public void display() {
-		out.println("Moves: " + getNumberOfMoves());
-		printTowers();
+		display.display(this);
+		display.display(towers);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.Playable#endGame()
+	 */
 	public void endGame() {
 		if (fastExit) {
 			out.println("Quitting");
-		}else {
-			printTowers();
+		} else {
+			display.display(towers);
 			out.println("Congratulations! You completed the game in "
 					+ getNumberOfMoves() + " moves.");
 		}
@@ -118,19 +152,35 @@ public class CLIHanoi extends AbstractHanoiGame{
 		return -1;
 	}
 
-	private int getMove(String prompt, String errorResponse) {
+	/**
+	 * Sends the prompt to the output, and attempts to retrieve data, if an
+	 * error occurs, displays the given error message. Returns an int
+	 * representing the choice of the user.
+	 * 
+	 * @param prompt
+	 * @param errorResponse
+	 * @return int representing a tower index. Returns -1 for menu commands like
+	 *         reset or exit.
+	 */
+	private int getTowerChoice(String prompt, String errorResponse) {
 		out.println(prompt);
-		int tower = getIntFromInput();
+		int choice = getIntFromInput();
 
-		while ((tower != 1) && (tower != 2) && (tower != 3)) {
+		while ((choice != 1) && (choice != 2) && (choice != 3)) {
 			if (reset || fastExit)
 				return -1;
 			out.println(errorResponse);
-			tower = getIntFromInput();
+			choice = getIntFromInput();
 		}
-		return tower;
+		return choice;
 	}
 
+	/**
+	 * Prompts the user for the number of plates to play with, then validates
+	 * the input.
+	 * 
+	 * @return the number of plates the user chose.
+	 */
 	private int getNumberOfPlatesForGame() {
 		String question = "How tall would you like the towers to be? (Must be an odd number.)";
 		String errorResponse = "That is an invalid input. Please enter an odd number >= 3";
@@ -145,7 +195,11 @@ public class CLIHanoi extends AbstractHanoiGame{
 		return gameSize;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.Playable#next()
+	 */
 	public Playable next() {
 		play();
 		if (reset) {
@@ -154,6 +208,9 @@ public class CLIHanoi extends AbstractHanoiGame{
 		return this;
 	}
 
+	/**
+	 * Private helper method that performs one turn from start to finish.
+	 */
 	private void play() {
 		int towerOne = 0, towerTwo = 0;
 		boolean firstTry = true;
@@ -169,44 +226,33 @@ public class CLIHanoi extends AbstractHanoiGame{
 			} else {
 				firstTry = !firstTry;
 			}
-			towerOne = getMove(firstPrompt, errorResponse);
+			towerOne = getTowerChoice(firstPrompt, errorResponse);
 			if (reset) {
 				resetGame();
 				return;
 			} else if (fastExit) {
 				return;
 			}
-			towerTwo = getMove(secondPrompt, errorResponse);
+			towerTwo = getTowerChoice(secondPrompt, errorResponse);
 
 			m = new CLIMove(towerOne, towerTwo);
 			try {
 				towers.applyMove(m);
 				success = true;
 			} catch (IllegalActionException badMove) {
-				
+
 			}
 		} while (reset || success);
 		moves.add(m);
-
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see abstracts.AbstractHanoiGame#isGameOver()
+	 */
 	@Override
 	public boolean isGameOver() {
 		return super.isGameOver() || fastExit;
 	}
-
-	/**
-	 * Helper method to abstract the printing.
-	 */
-	private void printTowers() {
-		display.display(towers);
-	}
-
-	/**
-	 * Prints a welcome message to the output
-	 */
-	private void printWelcome() {
-		out.println("Welcome to Towers of Hanoi.");
-	}
-
 }
