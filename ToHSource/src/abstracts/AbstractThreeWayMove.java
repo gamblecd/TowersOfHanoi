@@ -66,6 +66,7 @@ public abstract class AbstractThreeWayMove implements Move {
 		if (p != null) {
 			if (to.getTower(towers).pushOnto(p)) {
 				from.getTower(towers).pop();
+				return;
 			}
 		}
 		throw new IllegalActionException("Cannot perform the move from " + from
