@@ -1,20 +1,19 @@
 package com.cgamble.games.mobiletowersofhanoi;
 
-import interfaces.Display;
 import interfaces.Playable;
 import interfaces.Tower;
 import interfaces.Towers;
+import abstracts.AbstractDisplay;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.cgamble.games.mobiletowersofhanoi.HanoiGameActivity.AndroidHanoiGame;
 import com.cgamble.games.mobiletowersofhanoi.util.AndroidHanoiTower;
 
 import entities.Plate;
 
-public class MobileDisplay implements Display {
+public class MobileDisplay extends AbstractDisplay {
 	private View context;
 	private final int ERROR_COLOR = Color.RED;
 	private final int NORMAL_COLOR = Color.WHITE;
@@ -26,7 +25,10 @@ public class MobileDisplay implements Display {
 		this.context = context;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see interfaces.Display#display(interfaces.Tower)
+	 */
 	public void display(Tower tower) {
 		ToggleButton button;
 		String displayText;
@@ -40,7 +42,10 @@ public class MobileDisplay implements Display {
 		button.setText(displayText);
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see interfaces.Display#display(interfaces.Playable)
+	 */
 	public void display(Playable playable) {
 		TextView movesText = (TextView) context.findViewById(R.id.moves_text);
 		movesText.setText("Moves: " + playable.getNumberOfMoves());
@@ -58,27 +63,14 @@ public class MobileDisplay implements Display {
 		}
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see interfaces.Display#display(interfaces.Towers)
+	 */
 	public void display(Towers towers) {
 		// update text for buttons
 		for (Tower t: towers.getAllTowers()) {
 			display(t);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see interfaces.Display#setPlayableError(java.lang.String)
-	 */
-	public void setPlayableError(String error) {
-		this.error = error;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see interfaces.Display#setPlayableMessage(java.lang.String)
-	 */
-	public void setPlayableMessage(String message) {
-		this.message = message;
 	}
 }

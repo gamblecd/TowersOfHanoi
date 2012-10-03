@@ -134,7 +134,7 @@ public class HanoiGameActivity extends Activity {
 		game.resetGame();
 	}
 
-	class AndroidHanoiGame extends AbstractHanoiGame implements
+	public class AndroidHanoiGame extends AbstractHanoiGame implements
 			OnItemSelectedListener {
 
 		final static int DEFAULT_GAME_SIZE = 5;
@@ -209,7 +209,6 @@ public class HanoiGameActivity extends Activity {
 		 * 
 		 * @see interfaces.Playable#endGame()
 		 */
-		@Override
 		public void endGame() {
 			int moves = getNumberOfMoves();
 			display.setPlayableMessage(getString(R.string.end_game_text, moves));
@@ -220,7 +219,6 @@ public class HanoiGameActivity extends Activity {
 		 * 
 		 * @see interfaces.Playable#next()
 		 */
-		@Override
 		public Playable next() {
 			Move move = new MobileMove(from, to);
 			try {
@@ -239,7 +237,6 @@ public class HanoiGameActivity extends Activity {
 		 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(
 		 * android.widget.AdapterView, android.view.View, int, long)
 		 */
-		@Override
 		public void onItemSelected(AdapterView<?> adapter, View v, int pos,
 				long id) {
 			try {
@@ -259,7 +256,6 @@ public class HanoiGameActivity extends Activity {
 		 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected
 		 * (android.widget.AdapterView)
 		 */
-		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
 			currentGameSize = DEFAULT_GAME_SIZE;
 			createNewGame();
