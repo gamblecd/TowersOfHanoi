@@ -49,7 +49,6 @@ public class Plate implements Comparable<Plate>, HasSize, CLInteraction,
 		return sb.toString();
 	}
 
-	@Override
 	public int compareTo(Plate p) {
 		if (p != null)
 			return this.PLATE_SIZE - p.PLATE_SIZE;
@@ -71,7 +70,6 @@ public class Plate implements Comparable<Plate>, HasSize, CLInteraction,
 	/**
 	 * @see main.HasSize#size()
 	 */
-	@Override
 	public int size() {
 		return PLATE_SIZE;
 	}

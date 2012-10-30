@@ -10,12 +10,10 @@ public abstract class AbstractDisplay implements Display {
 		super();
 	}
 
-	@Override
 	public void setPlayableError(String error) {
 		this.error = error;
 	}
 
-	@Override
 	public void setPlayableMessage(String message) {
 		this.message = message;
 	}

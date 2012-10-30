@@ -25,7 +25,6 @@ public class CLIDisplay extends AbstractDisplay implements Display {
 	 * 
 	 * @see interfaces.Display#display(interfaces.Tower)
 	 */
-	@Override
 	public void display(Tower tower) {
 		int maxSize = tower.maxSize();
 		StringBuilder base = new StringBuilder();
@@ -61,7 +60,6 @@ public class CLIDisplay extends AbstractDisplay implements Display {
 	 * 
 	 * @see interfaces.Display#display(interfaces.Towers)
 	 */
-	@Override
 	public void display(Towers towers) {
 		TriTowers triTowers = (TriTowers) towers;
 		display(triTowers.getLeftTower());
@@ -74,7 +72,6 @@ public class CLIDisplay extends AbstractDisplay implements Display {
 	 * 
 	 * @see interfaces.Display#display(interfaces.Playable)
 	 */
-	@Override
 	public void display(Playable playable) {
 		output.println("Moves: " + playable.getNumberOfMoves());
 	}

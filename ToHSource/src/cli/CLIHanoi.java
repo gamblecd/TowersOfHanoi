@@ -52,7 +52,7 @@ public class CLIHanoi extends AbstractHanoiGame {
 			input = in;
 		}
 		if (out != null) {
-			this.out = (PrintStream) out;
+			this.out = out;
 		}
 		this.in = new Scanner(input);
 		this.display = new CLIDisplay(this.out);

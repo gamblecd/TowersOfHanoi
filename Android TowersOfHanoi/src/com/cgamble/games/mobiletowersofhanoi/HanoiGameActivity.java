@@ -183,6 +183,7 @@ public class HanoiGameActivity extends Activity {
 		 * 
 		 * @see abstracts.AbstractHanoiGame#resetGame()
 		 */
+		@Override
 		public void resetGame() {
 			super.resetGame();
 			if (from != null)

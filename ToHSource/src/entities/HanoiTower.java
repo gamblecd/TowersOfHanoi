@@ -24,7 +24,7 @@ public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 	}
 
 	private boolean equals(HanoiTower t) {
-		return (this.maxSize == t.maxSize) && super.equals((Stack<Plate>) t);
+		return (this.maxSize == t.maxSize) && super.equals(t);
 	}
 
 	/*
@@ -78,7 +78,6 @@ public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 	 * 
 	 * @see entities.Tower#pushOnto(entities.Plate)
 	 */
-	@Override
 	public boolean pushOnto(Plate p) {
 		if ((size() == 0)) {
 			if (p.size() <= maxSize)
@@ -113,7 +112,6 @@ public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
 		return "Tower[size=" + size() + ", maxSize=" + maxSize + "]";
 	}
 
-	@Override
 	public int maxSize() {
 		return maxSize;
 	}
