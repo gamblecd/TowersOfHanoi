@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import abstracts.AbstractHanoiGame;
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +30,7 @@ public class HanoiGameActivity extends Activity {
 	private Playable game;
 	private ToggleButton to;
 	private ToggleButton from;
+	private final Context context = this;
 
 	/*
 	 * (non-Javadoc)
@@ -134,16 +137,13 @@ public class HanoiGameActivity extends Activity {
 		game.resetGame();
 	}
 
-	public class AndroidHanoiGame extends AbstractHanoiGame implements
+	private class AndroidHanoiGame extends AbstractHanoiGame implements
 			OnItemSelectedListener {
-
-		final static int DEFAULT_GAME_SIZE = 5;
-
 		private Display display;
-		private int currentGameSize = DEFAULT_GAME_SIZE;
+		private int currentGameSize;
 
 		public AndroidHanoiGame(Display d) {
-			this(d, DEFAULT_GAME_SIZE);
+			this(d, context.getResources().getInteger(R.integer.default_game_size));
 		}
 
 		/**
@@ -241,11 +241,11 @@ public class HanoiGameActivity extends Activity {
 		public void onItemSelected(AdapterView<?> adapter, View v, int pos,
 				long id) {
 			try {
-				String choice = ((TextView) v).getText().toString();
-				currentGameSize = Integer.parseInt(choice.substring(choice
-						.length() - 1));
+				int choice = context.getResources().getIntArray(R.array.difficulty_array_values)
+				        [((Spinner) adapter).getSelectedItemPosition()];
+				currentGameSize = choice;
 			} catch (Exception nfe) {
-				currentGameSize = DEFAULT_GAME_SIZE;
+				currentGameSize = context.getResources().getInteger(R.integer.default_game_size);
 			}
 			createNewGame();
 		}
@@ -258,7 +258,7 @@ public class HanoiGameActivity extends Activity {
 		 * (android.widget.AdapterView)
 		 */
 		public void onNothingSelected(AdapterView<?> arg0) {
-			currentGameSize = DEFAULT_GAME_SIZE;
+			currentGameSize = context.getResources().getInteger(R.integer.default_game_size);
 			createNewGame();
 		}
 	}

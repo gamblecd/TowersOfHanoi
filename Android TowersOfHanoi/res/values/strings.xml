@@ -2,6 +2,7 @@
 
     <string name="app_name">MobileTowersOfHanoi</string>
     <string name="menu_settings">Settings</string>
+    <integer name="default_game_size">5</integer>
 
     <!-- titles -->
     <string name="title_activity_hanoi_game">Towers of Hanoi - Mobile</string>
@@ -18,18 +19,27 @@
     <!-- Get Number of Plates Texts -->
     <string name="get_game_size_text">Difficulty:</string>
 
+    
+    <!-- The two following arrays must always be the same length!!!!-->
     <string-array id="difficulty_array" name="difficulty_array">
         <item value="3">Easy - 3</item>
         <item value="5">Medium - 5</item>
-        <item>Hard - 7</item>
-        <item>Even Harder - 9</item>
-        <item>Ahhh Yeeaaahh - 11</item>
+        <item value="7">Hard - 7</item>
+        <item value="9">Even Harder - 9</item>
+        <item value="11">Ahhh Yeeaaahh - 11</item>
     </string-array>
+    <integer-array id="difficulty_array_values" name="difficulty_array_values">
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+        <item>9</item>
+        <item>11</item>
+    </integer-array>
+   
 
     <!-- End Game Texts -->
     <string name="end_game_text">Congratulations, you beat the Towers of Hanoi. It only took you %1$d moves.</string>
 
     <!-- Error Messages -->
     <string name="invalid_move">That move is not legal.</string>
-
 </resources>

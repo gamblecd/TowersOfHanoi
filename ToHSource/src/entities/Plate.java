@@ -1,9 +1,8 @@
 package entities;
 
 import interfaces.CLInteraction;
-import interfaces.HasSize;
 
-public class Plate implements Comparable<Plate>, HasSize, CLInteraction,
+public class Plate implements Comparable<Plate>, CLInteraction,
 		Cloneable {
 	private final int PLATE_SIZE;
 	private final String unit;

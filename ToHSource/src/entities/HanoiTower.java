@@ -1,11 +1,10 @@
 package entities;
 
-import interfaces.HasSize;
 import interfaces.Tower;
 
 import java.util.Stack;
 
-public class HanoiTower extends Stack<Plate> implements HasSize, Tower {
+public class HanoiTower extends Stack<Plate> implements Tower {
 	private static final long serialVersionUID = 2547452368202527253L;
 	private int maxSize;
 

@@ -4,7 +4,18 @@ import interfaces.Playable;
 import interfaces.Tower;
 import interfaces.Towers;
 import abstracts.AbstractDisplay;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.shapes.ArcShape;
+import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RectShape;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -13,16 +24,25 @@ import com.cgamble.games.mobiletowersofhanoi.util.AndroidHanoiTower;
 
 import entities.Plate;
 
+@SuppressLint("NewApi")
 public class MobileDisplay extends AbstractDisplay {
 	private View context;
 	private final int ERROR_COLOR = Color.RED;
 	private final int NORMAL_COLOR = Color.WHITE;
-	private String error;
-	private String message;
+	private int maxPlateCount;
+	private int plateUnitWidth;
+	private int plateHeight;
 	
 	
 	public MobileDisplay(View context) {
-		this.context = context;
+		this(context, context.getResources().getInteger(R.integer.default_game_size));
+	}
+	
+	public MobileDisplay(View context, int gameSize) {
+	    this.context = context;
+	    this.maxPlateCount = gameSize;
+	    this.plateHeight = context.findViewById(R.id.tower_collection).getHeight() / maxPlateCount;
+	    this.plateUnitWidth = context.findViewById(R.id.tower_collection).getWidth() / (3 * maxPlateCount);
 	}
 
 	/*
@@ -37,6 +57,8 @@ public class MobileDisplay extends AbstractDisplay {
 		button = (ToggleButton) context.findViewById(t.getId());
 		p = tower.peek();
 		displayText = p != null ? p.size() + "" : "--";
+
+		setTowerImageOnButton(t, button);
 		button.setTextOn(displayText);
 		button.setTextOff(displayText);
 		button.setText(displayText);
@@ -72,5 +94,43 @@ public class MobileDisplay extends AbstractDisplay {
 		for (Tower t: towers.getAllTowers()) {
 			display(t);
 		}
+	}
+	
+	private Drawable makeImageFrom(Tower t) {
+	    RectShape shape;
+        Drawable shapeDrawable;
+        Drawable[] plateLayers = new Drawable[t.size() + 1];
+        shape = new RectShape();
+        shapeDrawable = new ShapeDrawable(shape);
+        shapeDrawable.setColorFilter(Color.YELLOW, Mode.SRC);
+        plateLayers[0] = shapeDrawable;
+        
+        if (t.size() > 0) {
+            Tower t2 = t.cloneTower();
+            Plate top = t.peek();
+            
+            for (int i=1; i<=t.size(); i++) {
+                Plate p = t2.pop();
+                int plateWidth = plateUnitWidth * p.size();
+                shape = new OvalShape();
+                shape.resize(plateWidth, plateHeight);
+                if (p.equals(top)) {
+                    //Special Case top plate
+                    shapeDrawable = new ShapeDrawable(shape);
+                    shapeDrawable.setColorFilter(Color.RED, Mode.SRC);
+                }else {
+                    shapeDrawable = new ShapeDrawable(shape);
+                }
+                plateLayers[i] = shapeDrawable;
+            }
+        
+        }
+        
+        LayerDrawable layers = new LayerDrawable(plateLayers);
+        return layers;
+	}
+	
+	private void setTowerImageOnButton(Tower t, ToggleButton button) {
+	    button.setBackground(makeImageFrom(t));
 	}
 }
